@@ -13,6 +13,7 @@ extends AbstractUIPlugin
 public static final String PLUGIN_ID = "net.jumperz.app.MDozens";
 private static Activator plugin;
 private volatile Shell shell;
+
 //--------------------------------------------------------------------------------
 public synchronized void setShell( Shell s )
 {

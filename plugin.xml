@@ -4,9 +4,11 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="dozenseclipseplugin.ViewPart1"
+            category="net.jumperz.app.MDozens"
+            class="net.jumperz.app.MDozens.view.MDomainView"
+            icon="src/net/jumperz/app/MDozens/resources/table_lightning.png"
             id="net.jumperz.app.MDozens.view.MDomainView"
-            name="name"
+            name="Domains"
             restorable="true">
       </view>
       <category
