@@ -65,9 +65,15 @@ initAction( loginAction, "server_lightning.png", menuManager );
 //--------------------------------------------------------------------------------
 private void login()
 {
+debug( "test" );
 Map dialogData = new HashMap();
 MLoginDialog dialog = new MLoginDialog( shell, dialogData );
 dialog.open();
+
+if( dialogData.size() > 0 )
+	{
+	debug( dialogData );
+	}
 }
 //--------------------------------------------------------------------------------
 private void onMouseDown( MouseEvent e )

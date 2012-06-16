@@ -5,7 +5,7 @@ import net.jumperz.util.MLogServer;
 public abstract class MAbstractLogAgent
 implements MConstants
 {
-public static boolean enabled = false;
+public static boolean enabled = true;
 
 protected String className = "";
 protected String prefix = "";
