@@ -2,7 +2,8 @@ package net.jumperz.app.MDozens.api;
 
 import net.jumperz.app.MDozens.*;
 import net.jumperz.util.MStreamUtil;
-
+import net.arnx.jsonic.*;
+import java.util.*;
 import java.net.*;
 import java.io.*;
 
@@ -19,16 +20,33 @@ this.user = user;
 this.apiKey = apiKey;
 }
 //--------------------------------------------------------------------------------
-//private static 
+private Map getApiResponse( String apiPath, Map header )
+throws IOException
+{
+URL url = new URL( "https://dozens.jp" + apiPath );
+URLConnection conn = url.openConnection();
+Iterator p = header.keySet().iterator();
+while( p.hasNext() )
+	{
+	String key = ( String )p.next();
+	String value = ( String )header.get( key );
+	conn.addRequestProperty( key, value );
+	debug( key + ":" + value );
+	}
+
+Map result = ( Map )JSON.decode( MStreamUtil.streamToString( conn.getInputStream() ) );
+return result;
+}
 //--------------------------------------------------------------------------------
 public void init()
 throws IOException
 {
-URL url = new URL( "https://dozens.jp/api/authorize.json" );
-URLConnection conn = url.openConnection();
-conn.addRequestProperty( "X-Auth-User", user );
-conn.addRequestProperty( "X-Auth-Key", apiKey );
-debug( MStreamUtil.streamToString( conn.getInputStream() ) );
+Map header = new HashMap();
+header.put( "X-Auth-User", user );
+header.put( "X-Auth-Key", apiKey );
+
+Map result = getApiResponse( "/api/authorize.json", header );
+debug( result );
 }
 //--------------------------------------------------------------------------------
 }
