@@ -13,23 +13,18 @@ import org.eclipse.swt.widgets.Composite;
 import java.util.*;
 import java.io.*;
 import net.jumperz.app.MDozens.*;
+import net.jumperz.util.*;
 
 public abstract class MAbstractView
 extends ViewPart
 implements MConstants, Listener
 {
 protected Shell shell;
-protected MProperties prop = MDataManager.getInstance().getProp();
 private String windowName;
 protected FormLayout	formLayout;
 protected static FormData buttonFormData1, buttonFormData2, buttonFormData3;
 protected boolean initialized = false;
 protected Composite parent;
-protected MEventManager eventManager = MEventManager.getInstance();
-protected MActionManager actionManager = MActionManager.getInstance();
-protected MDataManager dataManager = MDataManager.getInstance();
-//protected MThreadPool threadPool = MDataManager.getInstance().getThreadPool();
-//protected Set myActionSet = Collections.synchronizedSet( new HashSet() );
 protected MenuManager menuManager;
 protected IMenuManager dropDownMenu;
 protected IToolBarManager toolBar;
@@ -39,22 +34,6 @@ private MAbstractLogAgent logAgent = new MAbstractLogAgent(){};
 
 static
 {
-buttonFormData1 = new FormData( BUTTON_WIDTH, BUTTON_HEIGHT );
-buttonFormData1.right = new FormAttachment( 100, BUTTON1_RIGHT );
-buttonFormData1.bottom = new FormAttachment( 100, BUTTON1_BOTTOM );
-
-buttonFormData2 = new FormData( BUTTON_WIDTH, BUTTON_HEIGHT );
-buttonFormData2.right = new FormAttachment( 100, BUTTON2_RIGHT );
-buttonFormData2.bottom = new FormAttachment( 100, BUTTON2_BOTTOM );
-
-buttonFormData3 = new FormData( BUTTON_WIDTH, BUTTON_HEIGHT );
-buttonFormData3.right = new FormAttachment( 100, BUTTON3_RIGHT );
-buttonFormData3.bottom = new FormAttachment( 100, BUTTON3_BOTTOM );
-}
-//--------------------------------------------------------------------------------
-public void executeAction( String actionStr )
-{
-actionManager.executeAction( actionStr, this );
 }
 //--------------------------------------------------------------------------------
 public MAbstractView()
@@ -125,7 +104,7 @@ try
 	}
 catch( Exception e )
 	{
-	eventManager.fireErrorEvent( e );
+	//eventManager.fireErrorEvent( e );
 	}
 }
 //--------------------------------------------------------------------------------
