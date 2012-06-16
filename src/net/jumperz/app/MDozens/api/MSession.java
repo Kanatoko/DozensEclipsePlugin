@@ -13,6 +13,8 @@ implements MConstants
 {
 private String user;
 private String apiKey;
+
+private String authToken;
 //--------------------------------------------------------------------------------
 public MSession( String user, String apiKey )
 {
@@ -34,6 +36,13 @@ while( p.hasNext() )
 	debug( key + ":" + value );
 	}
 
+HttpURLConnection urlConn = ( HttpURLConnection )conn;
+int statusCode = urlConn.getResponseCode();
+if( statusCode != 200 )
+	{
+	throw new IOException( "Auth failed: statusCode=" + statusCode );
+	}
+
 Map result = ( Map )JSON.decode( MStreamUtil.streamToString( conn.getInputStream() ) );
 return result;
 }
@@ -46,7 +55,12 @@ header.put( "X-Auth-User", user );
 header.put( "X-Auth-Key", apiKey );
 
 Map result = getApiResponse( "/api/authorize.json", header );
-debug( result );
+if( !result.containsKey( "auth_token" ) )
+	{
+	throw new IOException( "Auth failed: auth_token not found. " + result );
+	}
+authToken = ( String )result.get( "auth_token" );
+debug( authToken );
 }
 //--------------------------------------------------------------------------------
 }
