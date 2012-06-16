@@ -63,4 +63,13 @@ authToken = ( String )result.get( "auth_token" );
 debug( authToken );
 }
 //--------------------------------------------------------------------------------
+public Map getZone()
+throws IOException
+{
+Map header = new HashMap();
+header.put( "X-Auth-Token", authToken );
+Map result = getApiResponse( "/api/zone.json", header );
+return result;
+}
+//--------------------------------------------------------------------------------
 }

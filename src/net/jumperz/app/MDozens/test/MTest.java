@@ -1,5 +1,6 @@
 package net.jumperz.app.MDozens.test;
 
+import java.util.*;
 import net.jumperz.app.MDozens.api.*;
 
 public class MTest
@@ -16,6 +17,13 @@ if( args.length != 2 )
 
 MSession session = new MSession( args[ 0 ], args[ 1 ] );
 session.init();
+Map zone = session.getZone();
+p( zone );
+}
+//--------------------------------------------------------------------------------
+public static void p( Object o )
+{
+System.out.println( o );
 }
 //--------------------------------------------------------------------------------
 }
