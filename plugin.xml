@@ -3,6 +3,16 @@
 <plugin>
    <extension
          point="org.eclipse.ui.views">
+      <view
+            class="dozenseclipseplugin.ViewPart1"
+            id="net.jumperz.app.MDozens.view.MDomainView"
+            name="name"
+            restorable="true">
+      </view>
+      <category
+            id="net.jumperz.app.MDozens"
+            name="Dozens">
+      </category>
    </extension>
 
 </plugin>
