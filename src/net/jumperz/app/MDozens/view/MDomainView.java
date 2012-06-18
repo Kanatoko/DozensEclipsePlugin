@@ -23,16 +23,22 @@ import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import net.jumperz.util.*;
 
 public class MDomainView
 extends MAbstractView
+implements MObserver1
 {
 private Table table;
 private Action loginAction;
 private MContext context = MContext.getInstance();
+
+public static MDomainView instance;
 //--------------------------------------------------------------------------------
 public MDomainView()
 {
+instance = this;
+context.register1( instance );
 }
 //--------------------------------------------------------------------------------
 public void init2()
@@ -66,17 +72,23 @@ loginAction.setText( "Login" );
 initAction( loginAction, "server_lightning.png", menuManager );
 }
 //--------------------------------------------------------------------------------
+public void onZone( Map domain )
+{
+
+}
+//--------------------------------------------------------------------------------
 private void login()
 {
-System.out.println( net.arnx.jsonic.JSON.class );
-Map dialogData = new HashMap();
+final Map dialogData = new HashMap();
 MLoginDialog dialog = new MLoginDialog( shell, dialogData );
 dialog.open();
 
 if( dialogData.size() > 0 )
 	{
-	//debug( dialogData );
+	(new Thread(){ public void run()
+	{
 	context.login( ( String )dialogData.get( "user" ), ( String )dialogData.get( "apiKey" ) );
+	}}).start();
 	}
 }
 //--------------------------------------------------------------------------------
@@ -87,6 +99,15 @@ private void onMouseDown( MouseEvent e )
 //--------------------------------------------------------------------------------
 public void setFocus()
 {
+}
+//--------------------------------------------------------------------------------
+public void update()
+{
+int state = context.getState();
+if( state == STATE_ZONE_SUCCESS )
+	{
+	debug( context.getZoneMap() );
+	}
 }
 //--------------------------------------------------------------------------------
 }

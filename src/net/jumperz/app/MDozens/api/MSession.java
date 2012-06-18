@@ -37,7 +37,6 @@ while( p.hasNext() )
 	}
 conn.addRequestProperty( "Connection", "close" );
 
-System.out.println( "--1--" );
 HttpURLConnection urlConn = ( HttpURLConnection )conn;
 int statusCode = urlConn.getResponseCode();
 if( statusCode != 200 )
@@ -45,13 +44,8 @@ if( statusCode != 200 )
 	throw new IOException( "Auth failed: statusCode=" + statusCode );
 	}
 
-System.out.println( "--2--" );
 String responseBody = MStreamUtil.streamToString( conn.getInputStream() );
-System.out.println( responseBody );
-System.out.println( "--3--" );
 Map result = ( Map )JSON.decode( responseBody );
-System.out.println( result );
-debug( result );
 return result;
 }
 //--------------------------------------------------------------------------------
@@ -68,8 +62,6 @@ if( !result.containsKey( "auth_token" ) )
 	throw new IOException( "Auth failed: auth_token not found. " + result );
 	}
 authToken = ( String )result.get( "auth_token" );
-System.out.println( authToken );
-debug( authToken );
 }
 //--------------------------------------------------------------------------------
 public Map getZone()
