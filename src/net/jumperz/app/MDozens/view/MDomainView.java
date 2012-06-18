@@ -2,6 +2,8 @@ package net.jumperz.app.MDozens.view;
 
 import java.util.*;
 
+import net.jumperz.app.MDozens.MContext;
+import net.jumperz.app.MDozens.api.MSession;
 import net.jumperz.app.MDozens.dialog.MLoginDialog;
 
 import org.eclipse.swt.widgets.Composite;
@@ -27,6 +29,7 @@ extends MAbstractView
 {
 private Table table;
 private Action loginAction;
+private MContext context = MContext.getInstance();
 //--------------------------------------------------------------------------------
 public MDomainView()
 {
@@ -65,14 +68,15 @@ initAction( loginAction, "server_lightning.png", menuManager );
 //--------------------------------------------------------------------------------
 private void login()
 {
-debug( "test" );
+System.out.println( net.arnx.jsonic.JSON.class );
 Map dialogData = new HashMap();
 MLoginDialog dialog = new MLoginDialog( shell, dialogData );
 dialog.open();
 
 if( dialogData.size() > 0 )
 	{
-	debug( dialogData );
+	//debug( dialogData );
+	context.login( ( String )dialogData.get( "user" ), ( String )dialogData.get( "apiKey" ) );
 	}
 }
 //--------------------------------------------------------------------------------
