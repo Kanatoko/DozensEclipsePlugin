@@ -1,6 +1,7 @@
 package net.jumperz.app.MDozens.view;
 
 import java.util.*;
+import java.util.List;
 
 import net.jumperz.app.MDozens.MContext;
 import net.jumperz.app.MDozens.api.MSession;
@@ -72,11 +73,6 @@ loginAction.setText( "Login" );
 initAction( loginAction, "server_lightning.png", menuManager );
 }
 //--------------------------------------------------------------------------------
-public void onZone( Map domain )
-{
-
-}
-//--------------------------------------------------------------------------------
 private void login()
 {
 final Map dialogData = new HashMap();
@@ -101,12 +97,53 @@ public void setFocus()
 {
 }
 //--------------------------------------------------------------------------------
+private void clearTableSwt()
+{
+	//reset table
+TableColumn[] columns = table.getColumns();
+for( int i = 0; i < columns.length;  ++i )
+	{
+	columns[ i ].dispose();
+	}
+table.removeAll();
+}
+//--------------------------------------------------------------------------------
+private void onZone( final Map zoneMap )
+{
+shell.getDisplay().asyncExec( new Runnable(){ public void run()	{//-----
+
+//clearTableSwt();
+
+List domainList = ( List )zoneMap.get( "domain" );
+if( domainList.size() > 0 )
+	{
+		//draw table column
+	TableColumn column = new TableColumn( table, SWT.NONE );
+	column.setText( "id" );
+	column.setWidth( 100 );
+	
+	column = new TableColumn( table, SWT.NONE );
+	column.setText( "name" );
+	column.setWidth( 100 );
+	
+	for( int i = 0; i < domainList.size(); ++i )
+		{
+		Map domainData = ( Map )domainList.get( i );
+		TableItem item = new TableItem( table, SWT.NONE );
+		item.setText( 0, ( String )domainData.get( "id" ) );
+		item.setText( 1, ( String )domainData.get( "name" ) );
+		}
+	}
+
+}});//-----
+}
+//--------------------------------------------------------------------------------
 public void update()
 {
 int state = context.getState();
 if( state == STATE_ZONE_SUCCESS )
 	{
-	debug( context.getZoneMap() );
+	onZone( context.getZoneMap() );
 	}
 }
 //--------------------------------------------------------------------------------
