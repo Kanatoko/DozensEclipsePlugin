@@ -73,4 +73,13 @@ Map result = getApiResponse( "/api/zone.json", header );
 return result;
 }
 //--------------------------------------------------------------------------------
+public Map getRecord( String zoneName )
+throws IOException
+{
+Map header = new HashMap();
+header.put( "X-Auth-Token", authToken );
+Map result = getApiResponse( "/api/record/" + zoneName + ".json", header );
+return result;
+}
+//--------------------------------------------------------------------------------
 }

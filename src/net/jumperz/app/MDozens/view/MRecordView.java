@@ -78,6 +78,11 @@ public void setFocus()
 public void update()
 {
 int state = context.getState();
+if( state == STATE_RECORD_SUCCESS )
+	{
+	Map recordMap = context.getRecordMap();
+	debug( recordMap );
+	}
 }
 //--------------------------------------------------------------------------------
 }

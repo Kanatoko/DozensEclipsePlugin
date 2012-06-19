@@ -15,6 +15,7 @@ private MSubject1 subject = new MSubject1Impl();
 
 private int state;
 private Map zoneMap;
+private Map recordMap;
 //--------------------------------------------------------------------------------
 private MContext()
 {
@@ -41,6 +42,11 @@ public Map getZoneMap()
 return zoneMap;
 }
 //--------------------------------------------------------------------------------
+public Map getRecordMap()
+{
+return recordMap;
+}
+//--------------------------------------------------------------------------------
 public void login( String user, String apiKey )
 {
 try
@@ -63,7 +69,16 @@ catch( Exception e )
 //--------------------------------------------------------------------------------
 public void onDomainSelect( Map domainData )
 {
-
+try
+	{
+	recordMap = session.getRecord( ( String )domainData.get( "name" ) );
+	state = STATE_RECORD_SUCCESS;
+	notify1();
+	}
+catch( Exception e )
+	{
+	handleError( e );
+	}
 }
 //--------------------------------------------------------------------------------
 private void cleanup()

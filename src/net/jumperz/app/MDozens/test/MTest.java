@@ -19,6 +19,8 @@ MSession session = new MSession( args[ 0 ], args[ 1 ] );
 session.init();
 Map zone = session.getZone();
 p( zone );
+Map record = session.getRecord( "ssldb.info" );
+p( record );
 }
 //--------------------------------------------------------------------------------
 public static void p( Object o )
