@@ -15,6 +15,13 @@
             id="net.jumperz.app.MDozens"
             name="Dozens">
       </category>
+      <view
+            category="net.jumperz.app.MDozens"
+            class="net.jumperz.app.MDozens.view.MRecordView"
+            id="net.jumperz.app.MDozens.view.MRecordView"
+            name="Records"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>

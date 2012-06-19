@@ -29,7 +29,7 @@ protected MenuManager menuManager;
 protected IMenuManager dropDownMenu;
 protected IToolBarManager toolBar;
 protected IActionBars actionBars;
-
+protected Table table;
 private MAbstractLogAgent logAgent = new MAbstractLogAgent(){};
 
 static
@@ -38,6 +38,17 @@ static
 //--------------------------------------------------------------------------------
 public MAbstractView()
 {
+}
+//--------------------------------------------------------------------------------
+protected void clearTableSwt()
+{
+	//reset table
+TableColumn[] columns = table.getColumns();
+for( int i = 0; i < columns.length;  ++i )
+	{
+	columns[ i ].dispose();
+	}
+table.removeAll();
 }
 //--------------------------------------------------------------------------------
 protected boolean isActive()
@@ -132,9 +143,23 @@ initialized = true;
 protected void init2()
 {
 }
+//--------------------------------------------------------------------------------
+protected void onTableSelect()
+{
+
+}
 // --------------------------------------------------------------------------------
 public final void handleEvent( Event event )
 {
+if( event.widget == table )
+	{
+	switch( event.type )
+		{
+		case SWT.Selection:
+			onTableSelect();
+			break;
+		}
+	}
 handleEvent2( event );
 }
 // --------------------------------------------------------------------------------
