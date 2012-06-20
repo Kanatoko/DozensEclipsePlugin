@@ -31,6 +31,7 @@ protected IToolBarManager toolBar;
 protected IActionBars actionBars;
 protected Table table;
 private MAbstractLogAgent logAgent = new MAbstractLogAgent(){};
+protected MProperties prop = MContext.getInstance().getProperties();
 
 static
 {
