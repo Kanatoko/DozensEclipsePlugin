@@ -75,13 +75,56 @@ public void setFocus()
 {
 }
 //--------------------------------------------------------------------------------
+private void onRecord( final Map recordMap )
+{
+shell.getDisplay().asyncExec( new Runnable(){ public void run()	{//-----
+
+clearTableSwt();
+
+List recordList = ( List )recordMap.get( "record" );
+if( recordList.size() > 0 )
+	{
+		//draw table column
+	Map firstRecord = ( Map )recordList.get( 0 );
+	Iterator p = firstRecord.keySet().iterator();
+	while( p.hasNext() )
+		{
+		String key = ( String )p.next();
+		TableColumn column = new TableColumn( table, SWT.NONE );
+		column.setText( key );	
+		}
+
+	/*
+	TableColumn column = new TableColumn( table, SWT.NONE );
+	column.setText( "id" );
+	column.setWidth( 100 );
+	
+	column = new TableColumn( table, SWT.NONE );
+	column.setText( "name" );
+	column.setWidth( 100 );
+	*/
+	
+	for( int i = 0; i < recordList.size(); ++i )
+		{
+		Map domainData = ( Map )recordList.get( i );
+		TableItem item = new TableItem( table, SWT.NONE );
+		item.setText( 0, ( String )domainData.get( "id" ) );
+		item.setText( 1, ( String )domainData.get( "name" ) );
+		item.setData( domainData );
+		}
+	}
+
+}});//-----
+}
+
+//--------------------------------------------------------------------------------
 public void update()
 {
 int state = context.getState();
 if( state == STATE_RECORD_SUCCESS )
 	{
 	Map recordMap = context.getRecordMap();
-	debug( recordMap );
+	onRecord( recordMap );
 	}
 }
 //--------------------------------------------------------------------------------

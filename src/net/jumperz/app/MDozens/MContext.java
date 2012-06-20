@@ -16,10 +16,21 @@ private MSubject1 subject = new MSubject1Impl();
 private int state;
 private Map zoneMap;
 private Map recordMap;
+private MProperties prop;
 //--------------------------------------------------------------------------------
 private MContext()
 {
 //singleton
+}
+//--------------------------------------------------------------------------------
+public void setProp( MProperties p )
+{
+prop = p;
+}
+//--------------------------------------------------------------------------------
+public MProperties getProperties()
+{
+return prop;
 }
 //--------------------------------------------------------------------------------
 public int getState()

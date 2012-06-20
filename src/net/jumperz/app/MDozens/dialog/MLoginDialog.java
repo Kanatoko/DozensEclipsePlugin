@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Button;
 
 public class MLoginDialog
 extends Dialog
@@ -25,6 +26,8 @@ implements MConstants
 {
 private Text userText, apiText;
 private Map dialogData;
+private MProperties prop = MContext.getInstance().getProperties();
+private Button rememberCheck;
 //--------------------------------------------------------------------------------
 public MLoginDialog( Shell parentShell, Map m )
 {
@@ -43,10 +46,27 @@ newShell.setImage( image );
 //--------------------------------------------------------------------------------
 protected void okPressed()
 {
-dialogData.put( "user",  userText.getText() );
-dialogData.put( "apiKey", apiText.getText() );
+String user = userText.getText();
+String apiKey = apiText.getText();
+
+dialogData.put( "user",  user );
+dialogData.put( "apiKey", apiKey );
 
 setReturnCode( OK );
+
+if( rememberCheck.getSelection() )
+	{
+	prop.setProperty( "user", user );
+	prop.setProperty( "apiKey", apiKey );
+	prop.setProperty( "remember", true );
+	}
+else
+	{
+	prop.setProperty( "user", "" );
+	prop.setProperty( "apiKey", "" );	
+	prop.setProperty( "remember", false );
+	}
+
 close();
 }
 //--------------------------------------------------------------------------------
@@ -102,8 +122,20 @@ fd_composite_1.right = new FormAttachment( 0, 400 );
 fd_composite_1.top = new FormAttachment( 0, 100 );
 composite_1.setLayoutData(fd_composite_1);
 
+rememberCheck = new Button(group1, SWT.CHECK);
+FormData fd_rememberCheck = new FormData();
+fd_rememberCheck.top = new FormAttachment(apiText, 6);
+fd_rememberCheck.left = new FormAttachment(userText, 0, SWT.LEFT);
+rememberCheck.setLayoutData(fd_rememberCheck);
+rememberCheck.setText("Remember User and API Key");
+
+if( prop.containsKey( "user" ) )
+	{
+	userText.setText( prop.getProperty( "user" ) );
+	apiText.setText( prop.getProperty( "apiKey" ) );
+	rememberCheck.setSelection( prop.getBooleanProperty( "remember" ) );
+	}
+
 return composite;
 }
-//--------------------------------------------------------------------------------
-
 }

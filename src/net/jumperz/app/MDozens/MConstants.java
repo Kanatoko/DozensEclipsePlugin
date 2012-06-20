@@ -8,4 +8,5 @@ public static final int STATE_LOGIN_FAILED = 2;
 public static final int STATE_ZONE_SUCCESS = 3;
 public static final int STATE_RECORD_SUCCESS = 4;
 
+public static final String DEFAULT_CONFIG_FILE_NAME = "dozens.conf";
 }
