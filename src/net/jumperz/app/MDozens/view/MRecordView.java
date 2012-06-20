@@ -49,7 +49,7 @@ public void init2()
 parent.setLayout( new FormLayout() );
 
 table = new Table( parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI );
-table.addMouseListener(new MouseAdapter() {
+table.addMouseListener( new MouseAdapter() {
 	@Override
 	public void mouseDown(MouseEvent e) {
 	onMouseDown( e );
@@ -57,6 +57,9 @@ table.addMouseListener(new MouseAdapter() {
 });
 table.setHeaderVisible( true );
 table.setLinesVisible( true );
+
+table.addListener( SWT.MouseDoubleClick, this );
+
 FormData d1 = new FormData();
 d1.top = new FormAttachment(0);
 d1.left = new FormAttachment( 0, 1 );
@@ -67,6 +70,90 @@ table.setLayoutData( d1 );
 menuManager = new MenuManager();
 Menu contextMenu = menuManager.createContextMenu( table );
 table.setMenu( contextMenu );
+}
+//--------------------------------------------------------------------------------
+protected void onTableDoubleClick( final int x, final int y )
+{
+
+final TableEditor editor = new TableEditor( table );
+
+shell.getDisplay().asyncExec( new Runnable(){ public void run()	{//*****
+
+Point point = new Point( x, y );
+final TableItem item = table.getItem( point );
+if( item == null )
+	{
+	return;
+	}
+int columnIndex = -1;
+for( int i = 0; i < table.getColumnCount(); ++i )
+	{
+	if( item.getBounds( i ).contains( point ) )
+		{
+		columnIndex = i;
+		break;
+		}
+	}
+if( columnIndex <= 2 )
+	{
+	return;
+	}
+
+Control control = null;
+if( columnNameList.get( columnIndex ).equals( "ttl" ) )
+	{
+	control = new Combo( table, SWT.READ_ONLY );
+	Combo combo = ( Combo )control;
+	combo.add( "60" );
+	combo.add( "3600" );
+	combo.add( "7200" );
+	combo.add( "86400" );
+	combo.select( 0 );
+	}
+else
+	{
+	control = new Text( table, SWT.NONE | SWT.BORDER );
+	Text text = ( Text )control;
+	text.setText( item.getText( columnIndex ) );
+	}
+
+
+editor.horizontalAlignment = SWT.LEFT;
+editor.grabHorizontal = true;
+editor.setEditor( control, item, columnIndex );
+
+final int selectedColumn = columnIndex;
+final Control control2 = control;
+
+Listener textListener = new Listener(){
+public void handleEvent( final Event e )
+{
+switch( e.type )
+	{
+	case SWT.FocusOut :
+		//updateDocument( item, selectedColumn, clazz, text.getText() );
+		control2.dispose();
+		break;
+	case SWT.Traverse :
+		switch( e.detail )
+			{
+			case SWT.TRAVERSE_RETURN :
+				//updateDocument( item, selectedColumn, clazz, text.getText() );
+			case SWT.TRAVERSE_ESCAPE :
+				control2.dispose();
+				e.doit = false;
+			}
+		break;
+	}
+}
+};
+
+control.addListener( SWT.FocusOut, textListener );
+control.addListener( SWT.Traverse, textListener );
+//text.selectAll();
+control.setFocus();
+
+}});//*****
 }
 //--------------------------------------------------------------------------------
 private void onMouseDown( MouseEvent e )

@@ -149,6 +149,15 @@ protected void onTableSelect()
 {
 
 }
+//--------------------------------------------------------------------------------
+protected void onTableDoubleClick( final int x, final int y )
+{
+}
+//--------------------------------------------------------------------------------
+protected void onTableDoubleClick( final Event event )
+{
+onTableDoubleClick( event.x, event.y );
+}
 // --------------------------------------------------------------------------------
 public final void handleEvent( Event event )
 {
@@ -158,6 +167,9 @@ if( event.widget == table )
 		{
 		case SWT.Selection:
 			onTableSelect();
+			break;
+		case SWT.MouseDoubleClick:
+			onTableDoubleClick( event );
 			break;
 		}
 	}
