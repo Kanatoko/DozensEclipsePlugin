@@ -58,6 +58,20 @@ public Map getRecordMap()
 return recordMap;
 }
 //--------------------------------------------------------------------------------
+public void updateRecord( String recordId, String fieldName, String value )
+{
+try
+	{
+	recordMap = session.updateRecord( recordId, fieldName, value );
+	state = STATE_RECORD_SUCCESS;
+	notify1();
+	}
+catch( Exception e )
+	{
+	handleError( e );
+	}
+}
+//--------------------------------------------------------------------------------
 public void login( String user, String apiKey )
 {
 try

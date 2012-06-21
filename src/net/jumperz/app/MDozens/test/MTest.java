@@ -21,6 +21,9 @@ Map zone = session.getZone();
 p( zone );
 Map record = session.getRecord( "ssldb.info" );
 p( record );
+
+Map result = session.updateRecord( "14137", "prio", "15" );
+p( result );
 }
 //--------------------------------------------------------------------------------
 public static void p( Object o )

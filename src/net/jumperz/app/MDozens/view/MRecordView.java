@@ -105,6 +105,7 @@ if( columnNameList.get( columnIndex ).equals( "ttl" ) )
 	control = new Combo( table, SWT.READ_ONLY );
 	Combo combo = ( Combo )control;
 	combo.add( "60" );
+	combo.add( "900" );
 	combo.add( "3600" );
 	combo.add( "7200" );
 	combo.add( "86400" );
@@ -132,13 +133,14 @@ switch( e.type )
 	{
 	case SWT.FocusOut :
 		//updateDocument( item, selectedColumn, clazz, text.getText() );
+		updateRecord( item, selectedColumn, control2 );
 		control2.dispose();
 		break;
 	case SWT.Traverse :
 		switch( e.detail )
 			{
 			case SWT.TRAVERSE_RETURN :
-				//updateDocument( item, selectedColumn, clazz, text.getText() );
+				updateRecord( item, selectedColumn, control2 );
 			case SWT.TRAVERSE_ESCAPE :
 				control2.dispose();
 				e.doit = false;
@@ -154,6 +156,29 @@ control.addListener( SWT.Traverse, textListener );
 control.setFocus();
 
 }});//*****
+}
+//--------------------------------------------------------------------------------
+private void updateRecord( TableItem item, int columnIndex, Control control )
+{
+String value = null;
+if( control instanceof Text )
+	{
+	Text text = ( Text )control;
+	value = text.getText();
+	}
+else
+	{
+	Combo combo = ( Combo )control;
+	value = combo.getText();
+	}
+
+String columnName = ( String )columnNameList.get( columnIndex );
+debug( columnName );
+
+Map recordData = ( Map )item.getData();
+String recordId = ( String )recordData.get( "id" );
+
+context.updateRecord( recordId, columnName, value );
 }
 //--------------------------------------------------------------------------------
 private void onMouseDown( MouseEvent e )
@@ -193,6 +218,7 @@ if( recordList.size() > 0 )
 		{
 		Map recordData = ( Map )recordList.get( i );
 		TableItem item = new TableItem( table, SWT.NONE );
+		item.setData( recordData );
 		
 		for( int k = 0; k < columnNameList.size(); ++k )
 			{
