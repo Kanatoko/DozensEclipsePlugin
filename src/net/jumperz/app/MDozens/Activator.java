@@ -8,6 +8,7 @@ import java.io.*;
 import net.jumperz.util.*;
 import org.eclipse.core.runtime.Platform;
 import java.net.*;
+import org.eclipse.ui.console.*;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -34,11 +35,36 @@ public Activator()
 {
 }
 //--------------------------------------------------------------------------------
+  private MessageConsole findConsole(String name) {
+      ConsolePlugin plugin = ConsolePlugin.getDefault();
+      IConsoleManager conMan = plugin.getConsoleManager();
+      IConsole[] existing = conMan.getConsoles();
+      for (int i = 0; i < existing.length; i++)
+         if (name.equals(existing[i].getName()))
+            return (MessageConsole) existing[i];
+      //no console found, so create a new ones
+      MessageConsole myConsole = new MessageConsole(name, null);
+      conMan.addConsoles(new IConsole[]{myConsole});
+      return myConsole;
+   }
+//--------------------------------------------------------------------------------
+private void setupConsole()
+{
+MessageConsole mc = findConsole( CONSOLE_NAME );
+MessageConsoleStream out = mc.newMessageStream();
+PrintStream ps = new PrintStream( out );
+MAbstractLogAgent.enabled = true;
+MLogServer.getInstance().setSimpleOut( ps );
+}
+
+//--------------------------------------------------------------------------------
 public void start( BundleContext context )
 throws Exception
 {
 super.start(context);
 plugin = this;
+setupConsole();
+
 loadConfig();
 }
 //--------------------------------------------------------------------------------

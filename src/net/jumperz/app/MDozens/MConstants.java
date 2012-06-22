@@ -9,4 +9,5 @@ public static final int STATE_ZONE_SUCCESS = 3;
 public static final int STATE_RECORD_SUCCESS = 4;
 
 public static final String DEFAULT_CONFIG_FILE_NAME = "dozens.conf";
+public static final String CONSOLE_NAME = "Dozens Log";
 }

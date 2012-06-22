@@ -129,21 +129,27 @@ final Control control2 = control;
 Listener textListener = new Listener(){
 public void handleEvent( final Event e )
 {
+debug( "type:" + e.type );
 switch( e.type )
 	{
 	case SWT.FocusOut :
 		//updateDocument( item, selectedColumn, clazz, text.getText() );
 		updateRecord( item, selectedColumn, control2 );
-		control2.dispose();
+		break;
+	case SWT.Modify :
+		updateRecord( item, selectedColumn, control2 );
 		break;
 	case SWT.Traverse :
+		debug( "detail:" + e.detail );
 		switch( e.detail )
 			{
 			case SWT.TRAVERSE_RETURN :
 				updateRecord( item, selectedColumn, control2 );
+				break;
 			case SWT.TRAVERSE_ESCAPE :
 				control2.dispose();
 				e.doit = false;
+				break;
 			}
 		break;
 	}
@@ -152,6 +158,7 @@ switch( e.type )
 
 control.addListener( SWT.FocusOut, textListener );
 control.addListener( SWT.Traverse, textListener );
+control.addListener( SWT.Modify, textListener );
 //text.selectAll();
 control.setFocus();
 
@@ -179,6 +186,8 @@ Map recordData = ( Map )item.getData();
 String recordId = ( String )recordData.get( "id" );
 
 context.updateRecord( recordId, columnName, value );
+
+control.dispose();
 }
 //--------------------------------------------------------------------------------
 private void onMouseDown( MouseEvent e )
