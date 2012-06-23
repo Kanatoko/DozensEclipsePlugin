@@ -241,7 +241,12 @@ if( recordList.size() > 0 )
 		
 		for( int k = 0; k < columnNameList.size(); ++k )
 			{
-			item.setText( k, ( String )recordData.get( columnNameList.get( k ) ) );
+			String key = ( String )columnNameList.get( k );
+			String value = ( String )recordData.get( key );
+			if( value != null )
+				{
+				item.setText( k, value );
+				}
 			}
 		}
 	}
