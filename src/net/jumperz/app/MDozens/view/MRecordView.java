@@ -49,14 +49,16 @@ public void init2()
 parent.setLayout( new FormLayout() );
 
 table = new Table( parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI );
+table.setHeaderVisible( true );
+table.setLinesVisible( true );
+
+table.setLayoutData(new FormData());
 table.addMouseListener( new MouseAdapter() {
 	@Override
 	public void mouseDown(MouseEvent e) {
 	onMouseDown( e );
 	}
 });
-table.setHeaderVisible( true );
-table.setLinesVisible( true );
 
 table.addListener( SWT.MouseDoubleClick, this );
 
