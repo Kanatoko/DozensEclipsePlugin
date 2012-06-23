@@ -100,8 +100,10 @@ if( columnIndex <= 2 )
 	}
 
 Control control = null;
+boolean isCombo = false;
 if( columnNameList.get( columnIndex ).equals( "ttl" ) )
 	{
+	isCombo = true;
 	control = new Combo( table, SWT.READ_ONLY );
 	Combo combo = ( Combo )control;
 	combo.add( "60" );
@@ -156,9 +158,15 @@ switch( e.type )
 }
 };
 
-control.addListener( SWT.FocusOut, textListener );
-control.addListener( SWT.Traverse, textListener );
-control.addListener( SWT.Modify, textListener );
+if( isCombo )
+	{
+	control.addListener( SWT.Modify, textListener );
+	}
+else
+	{
+	control.addListener( SWT.FocusOut, textListener );
+	control.addListener( SWT.Traverse, textListener );
+	}
 //text.selectAll();
 control.setFocus();
 
