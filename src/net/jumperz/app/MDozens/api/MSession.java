@@ -25,6 +25,7 @@ this.apiKey = apiKey;
 private Map callApi( String apiPath, Map header, String body )
 throws IOException
 {
+debug( "calling api :" + apiPath );
 URL url = new URL( "http://dozens.jp" + apiPath );
 URLConnection conn = url.openConnection();
 Iterator p = header.keySet().iterator();
@@ -33,7 +34,7 @@ while( p.hasNext() )
 	String key = ( String )p.next();
 	String value = ( String )header.get( key );
 	conn.addRequestProperty( key, value );
-	debug( key + ":" + value );
+	//debug( key + ":" + value );
 	}
 conn.addRequestProperty( "Connection", "close" );
 
