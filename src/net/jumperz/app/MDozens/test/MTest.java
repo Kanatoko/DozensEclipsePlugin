@@ -1,7 +1,8 @@
 package net.jumperz.app.MDozens.test;
 
 import java.util.*;
-import net.jumperz.app.MDozens.api.*;
+
+import net.jumperz.net.dozens.*;
 
 public class MTest
 {

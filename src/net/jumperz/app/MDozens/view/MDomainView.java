@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.List;
 
 import net.jumperz.app.MDozens.MContext;
-import net.jumperz.app.MDozens.api.MSession;
 import net.jumperz.app.MDozens.dialog.MLoginDialog;
 
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +23,8 @@ import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+
+import net.jumperz.net.dozens.MSession;
 import net.jumperz.util.*;
 
 public class MDomainView

@@ -1,8 +1,9 @@
 package net.jumperz.app.MDozens;
 
 import java.util.*;
+
+import net.jumperz.net.dozens.*;
 import net.jumperz.util.*;
-import net.jumperz.app.MDozens.api.*;
 
 public class MContext
 extends MAbstractLogAgent

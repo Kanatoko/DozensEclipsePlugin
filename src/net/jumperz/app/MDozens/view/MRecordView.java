@@ -4,9 +4,9 @@ import java.util.*;
 import java.util.List;
 
 import net.jumperz.app.MDozens.MContext;
-import net.jumperz.app.MDozens.api.MSession;
 import net.jumperz.app.MDozens.dialog.MLoginDialog;
 import net.jumperz.gui.MSwtUtil;
+import net.jumperz.net.dozens.MSession;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;

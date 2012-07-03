@@ -1,4 +1,4 @@
-package net.jumperz.app.MDozens.api;
+package net.jumperz.net.dozens;
 
 import net.jumperz.app.MDozens.*;
 import net.jumperz.util.MStreamUtil;
