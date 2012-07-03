@@ -33,7 +33,7 @@ implements MObserver1
 {
 public static MRecordView instance;
 
-private Action loginAction;
+private Action deleteAction;
 private MContext context = MContext.getInstance();
 private List columnNameList;
 
@@ -42,6 +42,18 @@ public MRecordView()
 {
 instance = this;
 context.register1( instance );
+}
+//--------------------------------------------------------------------------------
+private void updateGui()
+{
+TableItem[] items = table.getSelection();
+boolean oneItem = false;
+if( items.length == 1 )
+	{
+	oneItem = true;
+	}
+
+deleteAction.setEnabled( oneItem );
 }
 //--------------------------------------------------------------------------------
 public void init2()
@@ -72,6 +84,22 @@ table.setLayoutData( d1 );
 menuManager = new MenuManager();
 Menu contextMenu = menuManager.createContextMenu( table );
 table.setMenu( contextMenu );
+
+{	//deleteAction
+deleteAction = new Action(){ public void run() { //--------
+delete();
+}};//-----
+deleteAction.setText( "Delete" );
+setActionImage( deleteAction, "bullet_delete.png" );
+menuManager.add( deleteAction );
+deleteAction.setEnabled( false );
+}
+
+}
+//--------------------------------------------------------------------------------
+private void delete()
+{
+
 }
 //--------------------------------------------------------------------------------
 protected void onTableDoubleClick( final int x, final int y )
@@ -202,10 +230,32 @@ control.dispose();
 //--------------------------------------------------------------------------------
 private void onMouseDown( MouseEvent e )
 {
+updateGui();
 }
 //--------------------------------------------------------------------------------
 public void setFocus()
 {
+}
+// --------------------------------------------------------------------------------
+protected void handleEvent2( Event event )
+{
+if( event.widget == table )
+	{
+	switch( event.type )
+		{
+		case SWT.Selection:
+			onTableSelect();
+			break;
+		case SWT.MouseDoubleClick:
+			onTableDoubleClick( event );
+			break;
+		}
+	}
+}
+//--------------------------------------------------------------------------------
+protected void onTableSelect()
+{
+updateGui();
 }
 //--------------------------------------------------------------------------------
 private void onRecord( final Map recordMap )
@@ -252,8 +302,9 @@ if( recordList.size() > 0 )
 	}
 
 }});//-----
-}
 
+updateGui();
+}
 //--------------------------------------------------------------------------------
 public void update()
 {
