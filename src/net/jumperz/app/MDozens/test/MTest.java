@@ -25,6 +25,9 @@ p( record );
 
 Map result = session.updateRecord( "14137", "prio", "15" );
 p( result );
+
+result = session.deleteRecord( "35136" );
+p( result );
 }
 //--------------------------------------------------------------------------------
 public static void p( Object o )

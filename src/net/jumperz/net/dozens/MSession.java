@@ -29,6 +29,7 @@ throws IOException
 {
 URL url = new URL( "http://dozens.jp" + apiPath );
 URLConnection conn = url.openConnection();
+HttpURLConnection urlConn = ( HttpURLConnection )conn;
 Iterator p = header.keySet().iterator();
 while( p.hasNext() )
 	{
@@ -39,6 +40,11 @@ while( p.hasNext() )
 	}
 conn.addRequestProperty( "Connection", "close" );
 
+if( apiPath.indexOf( "delete" ) > -1 )
+	{
+	urlConn.setRequestMethod( "DELETE" );
+	}
+
 if( body != null )
 	{
 	conn.setDoOutput( true );
@@ -48,7 +54,6 @@ if( body != null )
 	out.close();
 	}
 
-HttpURLConnection urlConn = ( HttpURLConnection )conn;
 int statusCode = urlConn.getResponseCode();
 if( statusCode != 200 )
 	{
@@ -66,6 +71,16 @@ throws IOException
 Map header = new HashMap();
 header.put( "X-Auth-Token", authToken );
 Map result = callApi( "/api/record/create.json", header, JSON.encode( data ) );
+return result;
+}
+//--------------------------------------------------------------------------------
+public Map deleteRecord( String recordId )
+throws IOException
+{
+// /api/record/delete/{record_id}.json
+Map header = new HashMap();
+header.put( "X-Auth-Token", authToken );
+Map result = callApi( "/api/record/delete/" + recordId + ".json", header );;
 return result;
 }
 //--------------------------------------------------------------------------------

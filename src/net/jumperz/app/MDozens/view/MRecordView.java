@@ -99,7 +99,21 @@ deleteAction.setEnabled( false );
 //--------------------------------------------------------------------------------
 private void delete()
 {
+TableItem[] items = table.getSelection();
+if( items.length != 1 )
+	{
+	return;
+	}
 
+MessageBox dialog = new MessageBox( shell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+dialog.setText("Confirm Delete");
+dialog.setMessage("Do you really want to delete?");
+int returnCode = dialog.open();
+if( returnCode == SWT.OK )
+	{
+	Map recordData = ( Map )items[ 0 ].getData();
+	context.deleteRecord( ( String )recordData.get( "id" ) );
+	}
 }
 //--------------------------------------------------------------------------------
 protected void onTableDoubleClick( final int x, final int y )

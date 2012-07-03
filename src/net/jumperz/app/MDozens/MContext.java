@@ -59,6 +59,11 @@ public Map getRecordMap()
 return recordMap;
 }
 //--------------------------------------------------------------------------------
+public void deleteRecord( String recordId )
+{
+
+}
+//--------------------------------------------------------------------------------
 public void updateRecord( String recordId, String fieldName, String value )
 {
 try
