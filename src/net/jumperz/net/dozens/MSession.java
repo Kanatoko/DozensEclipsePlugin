@@ -1,6 +1,5 @@
 package net.jumperz.net.dozens;
 
-import net.jumperz.app.MDozens.*;
 import net.jumperz.util.MStreamUtil;
 import net.arnx.jsonic.*;
 import java.util.*;
@@ -8,8 +7,6 @@ import java.net.*;
 import java.io.*;
 
 public class MSession
-extends MAbstractLogAgent
-implements MConstants
 {
 private String user;
 private String apiKey;
@@ -22,10 +19,14 @@ this.user = user;
 this.apiKey = apiKey;
 }
 //--------------------------------------------------------------------------------
+public String getAuthToken()
+{
+return authToken;
+}
+//--------------------------------------------------------------------------------
 private Map callApi( String apiPath, Map header, String body )
 throws IOException
 {
-debug( "calling api :" + apiPath );
 URL url = new URL( "http://dozens.jp" + apiPath );
 URLConnection conn = url.openConnection();
 Iterator p = header.keySet().iterator();
@@ -59,10 +60,32 @@ Map result = ( Map )JSON.decode( responseBody );
 return result;
 }
 //--------------------------------------------------------------------------------
+public Map addRecord( Map data )
+throws IOException
+{
+Map header = new HashMap();
+header.put( "X-Auth-Token", authToken );
+Map result = callApi( "/api/record/create.json", header, JSON.encode( data ) );
+return result;
+}
+//--------------------------------------------------------------------------------
 private Map callApi( String apiPath, Map header )
 throws IOException
 {
 return callApi( apiPath, header, null );
+}
+//--------------------------------------------------------------------------------
+public void init( String _authToken )
+throws IOException
+{
+if( _authToken == null )
+	{
+	init();
+	}
+else
+	{
+	authToken = _authToken;
+	}
 }
 //--------------------------------------------------------------------------------
 public void init()
