@@ -4,6 +4,7 @@ import java.util.*;
 
 import net.jumperz.net.dozens.*;
 import net.jumperz.util.*;
+import java.io.*;
 
 public class MContext
 extends MAbstractLogAgent
@@ -61,7 +62,16 @@ return recordMap;
 //--------------------------------------------------------------------------------
 public void deleteRecord( String recordId )
 {
-
+try
+	{
+	recordMap = session.deleteRecord( recordId );	
+	state = STATE_RECORD_SUCCESS;
+	notify1();
+	}
+catch( IOException e )
+	{
+	handleError( e );
+	}
 }
 //--------------------------------------------------------------------------------
 public void updateRecord( String recordId, String fieldName, String value )
@@ -72,7 +82,7 @@ try
 	state = STATE_RECORD_SUCCESS;
 	notify1();
 	}
-catch( Exception e )
+catch( IOException e )
 	{
 	handleError( e );
 	}
@@ -92,7 +102,7 @@ try
 	state = STATE_ZONE_SUCCESS;
 	notify1();
 	}
-catch( Exception e )
+catch( IOException e )
 	{
 	handleError( e );
 	}
@@ -106,7 +116,7 @@ try
 	state = STATE_RECORD_SUCCESS;
 	notify1();
 	}
-catch( Exception e )
+catch( IOException e )
 	{
 	handleError( e );
 	}

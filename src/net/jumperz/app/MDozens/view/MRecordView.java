@@ -93,6 +93,7 @@ deleteAction.setText( "Delete" );
 setActionImage( deleteAction, "bullet_delete.png" );
 menuManager.add( deleteAction );
 deleteAction.setEnabled( false );
+dropDownMenu.add( deleteAction );
 }
 
 }
