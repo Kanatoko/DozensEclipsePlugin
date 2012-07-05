@@ -156,7 +156,7 @@ if( columnNameList.get( columnIndex ).equals( "ttl" ) )
 	combo.add( "3600" );
 	combo.add( "7200" );
 	combo.add( "86400" );
-	combo.select( 0 );
+	//combo.select( 0 );
 	}
 else
 	{
@@ -181,19 +181,24 @@ switch( e.type )
 	{
 	case SWT.FocusOut :
 		//updateDocument( item, selectedColumn, clazz, text.getText() );
-		updateRecord( item, selectedColumn, control2 );
+		//updateRecord( item, selectedColumn, control2 );
+		debug( "focusout" );
+		control2.dispose();
 		break;
 	case SWT.Modify :
+		debug( "modify" );
 		updateRecord( item, selectedColumn, control2 );
 		break;
 	case SWT.Traverse :
-		debug( "detail:" + e.detail );
+		debug( "traverse" );
 		switch( e.detail )
 			{
 			case SWT.TRAVERSE_RETURN :
+				debug( "return" );
 				updateRecord( item, selectedColumn, control2 );
 				break;
 			case SWT.TRAVERSE_ESCAPE :
+				debug( "escape" );
 				control2.dispose();
 				e.doit = false;
 				break;
@@ -203,13 +208,13 @@ switch( e.type )
 }
 };
 
+control.addListener( SWT.FocusOut, textListener );
 if( isCombo )
 	{
 	control.addListener( SWT.Modify, textListener );
 	}
 else
 	{
-	control.addListener( SWT.FocusOut, textListener );
 	control.addListener( SWT.Traverse, textListener );
 	}
 //text.selectAll();
@@ -275,12 +280,15 @@ updateGui();
 //--------------------------------------------------------------------------------
 private void onRecord( final Map recordMap )
 {
-debug( recordMap );
-
 shell.getDisplay().asyncExec( new Runnable(){ public void run()	{//-----
 
 columnNameList = new ArrayList();
 clearTableSwt();
+
+if( !recordMap.containsKey( "record" ) )
+	{
+	return;
+	}
 
 List recordList = ( List )recordMap.get( "record" );
 if( recordList.size() > 0 )

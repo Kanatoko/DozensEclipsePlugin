@@ -61,8 +61,15 @@ if( statusCode != 200 )
 	}
 
 String responseBody = MStreamUtil.streamToString( conn.getInputStream() );
-Map result = ( Map )JSON.decode( responseBody );
-return result;
+Object resultObj = JSON.decode( responseBody );
+if( resultObj instanceof Map )
+	{
+	return ( Map )resultObj;
+	}
+else
+	{
+	return new HashMap();
+	}
 }
 //--------------------------------------------------------------------------------
 public Map addRecord( Map data )
