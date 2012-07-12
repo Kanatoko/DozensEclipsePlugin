@@ -105,6 +105,7 @@ try
 catch( IOException e )
 	{
 	handleError( e );
+	cleanup();
 	}
 }
 //--------------------------------------------------------------------------------
@@ -130,7 +131,6 @@ session = null;
 public void handleError( Exception e )
 {
 info( e );
-cleanup();
 }
 //----------------------------------------------------------------
 public void notify1()

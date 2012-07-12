@@ -36,12 +36,18 @@ public static MRecordView instance;
 private Action deleteAction;
 private MContext context = MContext.getInstance();
 private List columnNameList;
-
+private Set ttlSet = new HashSet();
 //--------------------------------------------------------------------------------
 public MRecordView()
 {
 instance = this;
 context.register1( instance );
+
+ttlSet.add( "60" );
+ttlSet.add( "900" );
+ttlSet.add( "3600" );
+ttlSet.add( "7200" );
+ttlSet.add( "86400" );
 }
 //--------------------------------------------------------------------------------
 private void updateGui()
@@ -146,6 +152,14 @@ if( columnIndex <= 2 )
 
 Control control = null;
 boolean isCombo = false;
+
+boolean isTTL = false;
+if( columnNameList.get( columnIndex ).equals( "ttl" ) )
+	{
+	isTTL = true;
+	}
+final boolean isTTL2 = isTTL;
+/*
 if( columnNameList.get( columnIndex ).equals( "ttl" ) )
 	{
 	isCombo = true;
@@ -159,6 +173,7 @@ if( columnNameList.get( columnIndex ).equals( "ttl" ) )
 	//combo.select( 0 );
 	}
 else
+*/
 	{
 	control = new Text( table, SWT.NONE | SWT.BORDER );
 	Text text = ( Text )control;
@@ -187,7 +202,7 @@ switch( e.type )
 		break;
 	case SWT.Modify :
 		debug( "modify" );
-		updateRecord( item, selectedColumn, control2 );
+		updateRecord( item, selectedColumn, control2, isTTL2 );
 		break;
 	case SWT.Traverse :
 		debug( "traverse" );
@@ -195,7 +210,7 @@ switch( e.type )
 			{
 			case SWT.TRAVERSE_RETURN :
 				debug( "return" );
-				updateRecord( item, selectedColumn, control2 );
+				updateRecord( item, selectedColumn, control2, isTTL2 );
 				break;
 			case SWT.TRAVERSE_ESCAPE :
 				debug( "escape" );
@@ -223,29 +238,45 @@ control.setFocus();
 }});//*****
 }
 //--------------------------------------------------------------------------------
-private void updateRecord( TableItem item, int columnIndex, Control control )
+private void updateRecord( TableItem item, int columnIndex, Control control, boolean isTTL )
 {
-String value = null;
-if( control instanceof Text )
+try
 	{
-	Text text = ( Text )control;
-	value = text.getText();
+	String value = null;
+	if( control instanceof Text )
+		{
+		Text text = ( Text )control;
+		value = text.getText();
+		}
+	else
+		{
+		Combo combo = ( Combo )control;
+		value = combo.getText();
+		}
+	
+	if( isTTL )
+		{
+		if( !ttlSet.contains( value ) )
+			{
+			MessageBox mb = new MessageBox( shell, SWT.ICON_ERROR );
+			mb.setMessage( "Invalid TTL. Choose from " + ttlSet );
+			mb.setText( "TTL value error" );
+			mb.open();
+			return;
+			}
+		}
+	
+	String columnName = ( String )columnNameList.get( columnIndex );
+	
+	Map recordData = ( Map )item.getData();
+	String recordId = ( String )recordData.get( "id" );
+	
+	context.updateRecord( recordId, columnName, value );	
 	}
-else
+finally
 	{
-	Combo combo = ( Combo )control;
-	value = combo.getText();
+	control.dispose();
 	}
-
-String columnName = ( String )columnNameList.get( columnIndex );
-debug( columnName );
-
-Map recordData = ( Map )item.getData();
-String recordId = ( String )recordData.get( "id" );
-
-context.updateRecord( recordId, columnName, value );
-
-control.dispose();
 }
 //--------------------------------------------------------------------------------
 private void onMouseDown( MouseEvent e )

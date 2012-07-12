@@ -57,7 +57,7 @@ if( body != null )
 int statusCode = urlConn.getResponseCode();
 if( statusCode != 200 )
 	{
-	throw new IOException( "Auth failed: statusCode=" + statusCode );
+	throw new IOException( "API failed: " + urlConn.getResponseMessage() );
 	}
 
 String responseBody = MStreamUtil.streamToString( conn.getInputStream() );
